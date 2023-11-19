@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" />
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.1/font/bootstrap-icons.css"
+    />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Amita:wght@400;700&family=Carter+One&family=IBM+Plex+Sans:wght@300;400;500;600&family=IBM+Plex+Serif:wght@300;400;500;600&family=Lobster&family=Merriweather&family=Noto+Serif:wght@400;700&family=Pacifico&family=Poppins:ital,wght@0,300;0,400;0,600;1,500&family=Roboto+Slab:wght@300;400;500&display=swap"
+      rel="stylesheet"
+    />
+    <title>Throttle || Amaan Ansari</title>
+  </head>
+
+  <style>
+    *,
+    *::after,
+    *::before {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+    input {
+      margin: 20px;
+      padding: 10px;
+    }
+  </style>
+
+  <body>
+    <div class="main-container">
+      <input type="text" id="text" placeholder="search user" />
+      <button id="submit">submit</button>
+    </div>
+
+    <script>
+      // api calling function
+      async function apiCall(data) {
+        // Put the api code here
+        console.log(data, "------data");
+        console.log("fetching data.....");
+      }
+
+      // function for using throttle functionality
+      const throttle = (fn, delay = 600) => {
+        let wait = false;
+        const button = document.getElementById("submit");
+
+        return (...args) => {
+          if (wait) return;
+
+          fn(...args);
+          wait = true;
+          button.disabled = true;
+
+          setTimeout(() => {
+            wait = false;
+            button.disabled = false;
+          }, delay);
+        };
+      };
+
+      // `getData` will call the api with delay
+      const getData = throttle(apiCall, 3000);
+
+      const button = document.getElementById("submit");
+      button.addEventListener("click", (e) => {
+        const inputValue = document.getElementById("text").value;
+        getData(inputValue);
+      });
+    </script>
+  </body>
+</html>
